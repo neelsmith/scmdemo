@@ -1,8 +1,14 @@
+import edu.holycross.shot.scm._
 import edu.holycross.shot.citeobj._
 import edu.holycross.shot.cite._
-import edu.holycross.shot.scm._
+import edu.holycross.shot.cex._
 
-val cexSrc = """#!citelibrary
+import scala.scalajs.js
+
+object Main extends js.JSApp {
+  def main(): Unit = {
+
+    val cexSrc = """#!citelibrary
 name#demo
 urn#urn:cite2:cex:testcoll:hdt1node
 license#public domain
@@ -37,21 +43,26 @@ msA#1#urn:cite2:hmt:msA.v1:1r#recto#Marcianus Graecus Z. 454 (= 822) (Venetus A)
 msA#2#urn:cite2:hmt:msA.v1:1v#verso#Marcianus Graecus Z. 454 (= 822) (Venetus A) folio 1v#urn:cite2:hmt:codex:msA
 msA#3#urn:cite2:hmt:msA.v1:2r#recto#Marcianus Graecus Z. 454 (= 822) (Venetus A) folio 2r#urn:cite2:hmt:codex:msA
 """
-// Demo of working with citable material in a ScalaJS environment.
-val u = Cite2Urn("urn:cite2:hmt:msA.v1:1v")
-println("You can make urns, e.g., " + u)
+
+
+  // Demo of working with citable material in a ScalaJS environment.
+  val u = Cite2Urn("urn:cite2:hmt:msA.v1:1v")
+  println("You can make urns, e.g., " + u)
 
 
 
-val citelib = CiteLibrary(cexSrc,"#",",")
-println("You can parse an entire CITE Library from a CEX source.")
-println("Text and collection repositories are Options. Here's an example.")
-citelib.collectionRepository match {
-  case None => println("But failed to make a collection repository fo it!")
-  case cr : Option[CiteCollectionRepository] => {
-    val repo = cr.get
-    assert(repo.catalog.size == 1)
-    assert(repo.data.size == 18)
-    println(s"Read a library with collection repository having ${repo.catalog.size} cataloged collection(s) and ${repo.data.size} property values." )
+  val citelib = CiteLibrary(cexSrc,"#",",")
+  println("You can parse an entire CITE Library from a CEX source.")
+  println("Text and collection repositories are Options. Here's an example.")
+  citelib.collectionRepository match {
+    case None => println("But failed to make a collection repository fo it!")
+    case cr : Option[CiteCollectionRepository] => {
+      val repo = cr.get
+      assert(repo.catalog.size == 1)
+      assert(repo.data.size == 18)
+      println(s"Read a library with collection repository having ${repo.catalog.size} cataloged collection(s) and ${repo.data.size} property values." )
+    }
+  }
+
   }
 }
